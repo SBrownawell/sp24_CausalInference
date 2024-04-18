@@ -2,28 +2,33 @@
 # R-package tmle 
 # Note: in 2018, the base super learner library was SL.step, SL.glm and SL.glm.interaction
 # this changed and thus we explicitely specify the library here; still the results are not exactly identical to those reported in the paper
+
+
+
+# importing packages
 library(tmle)
 library(SuperLearner)
-TMLE2 <- tmle(Y = ObsData$Y, A = ObsData$A, W = ObsData[,c("w1", "w2", "w3", "w4")], family = "binomial", 
-              Q.SL.library = c("SL.step", "SL.glm", "SL.glm.interaction"), g.SL.library = c("SL.step", "SL.glm", "SL.glm.interaction"))
 
-#Note that the tmle function default bounds the probablities in the clever covariate denominators at 0.025.
-#You can change this bound by specifying gbound=0.01 (or similar)
 
-ATEtmle2 <- TMLE2$estimates$ATE$psi;ATEtmle2
-TMLE2$estimates$ATE$CI
-MORtmle2 <- TMLE2$estimates$OR$psi;MORtmle2
-TMLE2$estimates$OR$CI
+# checking loaded data
+if(!exists("loadedData"))
+loadedData <- read.csv("D:/Desktop/DS HW/sp24_CausalINference/data/data.csv")
 
-### Box 10 ###
+# removing data where hrt is known
+ObsData <- subset(loadedData, hrt != 9)
+
 # R-package tmle with user-selected Super learner libraries
 # note: you need the following packagesto be installed (not necessarily loaded): randomForest, gam, rpart
 # as in Box 9, there are minor changes in the results due to updates of packages
+
 SL.library <- c("SL.glm","SL.step","SL.step.interaction", "SL.glm.interaction","SL.gam",
                 "SL.randomForest", "SL.rpart") 
 
-TMLE3 <- tmle(Y = ObsData$Y,A = ObsData$A,W = ObsData [,c("w1", "w2", "w3", "w4")], 
+TMLE3 <- tmle(Y = ObsData$cancer,A = ObsData$hrt,W = ObsData [,c("menopaus", "agegrp", "density", "race", "Hispanic", "bmi", "agefirst", "nrelbc", "brstproc", "lastmamm", "surgmeno")
+], 
               family = "binomial", Q.SL.library = SL.library,g.SL.library = SL.library)#, gbound=0)
+
+
 
 ATEtmle3 <- TMLE3$estimates$ATE$psi;ATEtmle3
 TMLE3$estimates$ATE$CI
