@@ -4,18 +4,13 @@
 # this changed and thus we explicitely specify the library here; still the results are not exactly identical to those reported in the paper
 
 
-
 # importing packages
 library(tmle)
 library(SuperLearner)
 
-
 # checking loaded data
 if(!exists("loadedData"))
-loadedData <- read.csv("D:/Desktop/DS HW/sp24_CausalINference/data/data.csv")
-
-# removing data where hrt is known
-ObsData <- subset(loadedData, hrt != 9)
+loadedData <- read.csv("D:/Desktop/DS HW/sp24_CausalINference/ethan/clean_data.csv")
 
 # R-package tmle with user-selected Super learner libraries
 # note: you need the following packagesto be installed (not necessarily loaded): randomForest, gam, rpart
@@ -24,7 +19,7 @@ ObsData <- subset(loadedData, hrt != 9)
 SL.library <- c("SL.glm","SL.step","SL.step.interaction", "SL.glm.interaction","SL.gam",
                 "SL.randomForest", "SL.rpart") 
 
-TMLE3 <- tmle(Y = ObsData$cancer,A = ObsData$hrt,W = ObsData [,c("menopaus", "agegrp", "density", "race", "Hispanic", "bmi", "agefirst", "nrelbc", "brstproc", "lastmamm", "surgmeno")
+TMLE3 <- tmle(Y = loadedData$cancer,A = loadedData$hrt,W = loadedData [,c("Hispanic", "menopaus", "race", "surgmeno")
 ], 
               family = "binomial", Q.SL.library = SL.library,g.SL.library = SL.library)#, gbound=0)
 
