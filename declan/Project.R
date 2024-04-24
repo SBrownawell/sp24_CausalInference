@@ -1,31 +1,51 @@
 library(tidyverse)
 library(tidymodels)
 library(readr)
+library(dplyr)
 
-risk <- read.table("risk.txt",header=TRUE)
 
-labels = c("meno", "agegrp", "density", "race", "Hispanic", "bmi", "agefirst", 
-           "nrelbc", "brstproc", "lastmamm", "surgmeno", "hrt", "invasive", 
-           "cancer", "training", "count")
+bc <- read.csv("data.csv",header=TRUE)
 
-for (i in 1:16) {
-  names(risk)[i] <- labels[i]
-}
+
+bc_limited = bc %>%
+  
+  filter(menopaus == 1 ) %>%
+  
+  filter(density < 9 ) %>%
+  
+  filter(race < 9 ) %>%
+  
+  filter(Hispanic < 9 ) %>%
+  
+  filter(bmi < 9 ) %>%
+  
+  filter(agefirst < 9 ) %>%
+  
+  filter(nrelbc < 9 ) %>%
+  
+  filter(brstproc < 9 ) %>%
+  
+  filter(lastmamm < 9 ) %>%
+  
+  filter(surgmeno < 9 ) %>%
+  
+  filter(hrt < 9 )
+
+View(bc_limited)
 
 #View(risk)
 
-mylogit <- glm(cancer ~ meno + agegrp + density + race + Hispanic + bmi + 
-                 agefirst + nrelbc + brstproc + lastmamm + surgmeno + hrt + 
-                 invasive, data = risk, family = binomial)
+mylogit <- glm(cancer ~ agegrp + density + bmi + 
+                 agefirst + nrelbc + brstproc + lastmamm + hrt, data = bc_limited, family = binomial)
 summary(mylogit)
 confint(mylogit)
 
 ########### Creating a predictive model #################
 # Split data into train and test
-risk$cancer = as.factor(risk$cancer)
+bc_limited$cancer = as.factor(bc_limited$cancer)
 
 set.seed(429)
-split <- initial_split(risk, prop = 0.8, strata = cancer)
+split <- initial_split(bc_limited, prop = 0.8, strata = cancer)
 train <- split %>% 
   training()
 test <- split %>% 
