@@ -6,17 +6,17 @@
 
 # importing packages
 if(!require(tmle)){
-	install.packages("tmle")
+	install.packages("tmle", repos="https://cloud.r-project.org/")
 	library(tmle)
 }
 
 if(!require(SuperLearner)){
-	install.packages("SuperLearner")
+	install.packages("SuperLearner", repos="https://cloud.r-project.org/")
 	library(SuperLearner)
 }
 
 if(!require(randomForest)){
-	install.packages("randomForest")
+	install.packages("randomForest", repos="https://cloud.r-project.org/")
 }
 
 # checking loaded data
