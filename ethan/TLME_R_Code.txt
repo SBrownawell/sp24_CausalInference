@@ -5,12 +5,28 @@
 
 
 # importing packages
-library(tmle)
-library(SuperLearner)
+if(!require(tmle)){
+	install.packages("tmle", repos="https://cloud.r-project.org/")
+	library(tmle)
+}
+
+if(!require(SuperLearner)){
+	install.packages("SuperLearner", repos="https://cloud.r-project.org/")
+	library(SuperLearner)
+}
+
+if(!require(randomForest)){
+	install.packages("randomForest", repos="https://cloud.r-project.org/")
+}
 
 # checking loaded data
 if(!exists("loadedData"))
-loadedData <- read.csv("D:/Desktop/DS HW/sp24_CausalINference/ethan/clean_data.csv")
+#loadedData <- read.csv("D:/Desktop/DS HW/sp24_CausalINference/ethan/clean_data.csv")
+
+data_file <- paste(getwd(), "clean_data.csv", sep="/")
+print(data_file)
+loadedData <- read.csv(data_file)
+
 
 # R-package tmle with user-selected Super learner libraries
 # note: you need the following packagesto be installed (not necessarily loaded): randomForest, gam, rpart

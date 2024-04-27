@@ -1,0 +1,98 @@
+
+R version 4.3.1 (2023-06-16) -- "Beagle Scouts"
+Copyright (C) 2023 The R Foundation for Statistical Computing
+Platform: x86_64-conda-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> 
+> # R-package tmle 
+> # Note: in 2018, the base super learner library was SL.step, SL.glm and SL.glm.interaction
+> # this changed and thus we explicitely specify the library here; still the results are not exactly identical to those reported in the paper
+> 
+> 
+> # importing packages
+> if(!require(tmle)){
++ 	install.packages("tmle", repos="https://cloud.r-project.org/")
++ 	library(tmle)
++ }
+Loading required package: tmle
+Loading required package: glmnet
+Loading required package: Matrix
+Loaded glmnet 4.1-8
+Loading required package: SuperLearner
+Loading required package: nnls
+Loading required package: gam
+Loading required package: splines
+Loading required package: foreach
+Loaded gam 1.22-3
+
+Super Learner
+Version: 2.0-29
+Package created on 2024-02-06
+
+Welcome to the tmle package, version 2.0.0
+
+Use tmleNews() to see details on changes and bug fixes
+> 
+> if(!require(SuperLearner)){
++ 	install.packages("SuperLearner", repos="https://cloud.r-project.org/")
++ 	library(SuperLearner)
++ }
+> 
+> if(!require(randomForest)){
++ 	install.packages("randomForest", repos="https://cloud.r-project.org/")
++ }
+Loading required package: randomForest
+randomForest 4.7-1.1
+Type rfNews() to see new features/changes/bug fixes.
+> 
+> # checking loaded data
+> if(!exists("loadedData"))
++ #loadedData <- read.csv("D:/Desktop/DS HW/sp24_CausalINference/ethan/clean_data.csv")
++ 
++ data_file <- paste(getwd(), "clean_data.csv", sep="/")
+> print(data_file)
+[1] "/home/ejbrgb/sp24_CausalInference/ethan/clean_data.csv"
+> loadedData <- read.csv(data_file)
+> 
+> 
+> # R-package tmle with user-selected Super learner libraries
+> # note: you need the following packagesto be installed (not necessarily loaded): randomForest, gam, rpart
+> # as in Box 9, there are minor changes in the results due to updates of packages
+> 
+> SL.library <- c("SL.glm","SL.step","SL.step.interaction", "SL.glm.interaction","SL.gam",
++                 "SL.randomForest", "SL.rpart") 
+> 
+> TMLE3 <- tmle(Y = loadedData$cancer,A = loadedData$hrt,W = loadedData [,c("Hispanic", "menopaus", "race", "surgmeno")
++ ], 
++               family = "binomial", Q.SL.library = SL.library,g.SL.library = SL.library)#, gbound=0)
+Loading required namespace: rpart
+> 
+> 
+> 
+> ATEtmle3 <- TMLE3$estimates$ATE$psi;ATEtmle3
+[1] 0.000601168
+> TMLE3$estimates$ATE$CI
+[1] -0.000092480  0.001294816
+> MORtmle3 <- TMLE3$estimates$OR$psi;MORtmle3
+[1] 1.10957
+> TMLE3$estimates$OR$CI
+[1] 0.9844074 1.2506475
+> 
+> 
+> proc.time()
+    user   system  elapsed 
+4905.654 7281.365 4980.139 
