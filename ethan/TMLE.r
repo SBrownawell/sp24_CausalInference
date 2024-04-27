@@ -23,7 +23,8 @@ if(!require(randomForest)){
 if(!exists("loadedData"))
 #loadedData <- read.csv("D:/Desktop/DS HW/sp24_CausalINference/ethan/clean_data.csv")
 
-data_file <- paste(getwd(), "clean_data.csv", sep="/")
+#data_file <- paste(getwd(), "clean_data.csv", sep="/")
+data_file <- paste(getwd(), "../data/clean_data.csv")
 print(data_file)
 loadedData <- read.csv(data_file)
 
