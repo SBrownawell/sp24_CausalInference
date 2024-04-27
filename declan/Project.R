@@ -2,102 +2,32 @@ library(tidyverse)
 library(tidymodels)
 library(readr)
 library(dplyr)
+library(car)
+library(boot)
+library(CausalModels)
 
+bc <- read.csv("./Ethan/clean_data.csv",header=TRUE)
 
-bc <- read.csv("data.csv",header=TRUE)
+View(bc)
 
-
-bc_limited = bc %>%
-  
-  filter(menopaus == 1 ) %>%
-  
-  filter(density < 9 ) %>%
-  
-  filter(race < 9 ) %>%
-  
-  filter(Hispanic < 9 ) %>%
-  
-  filter(bmi < 9 ) %>%
-  
-  filter(agefirst < 9 ) %>%
-  
-  filter(nrelbc < 9 ) %>%
-  
-  filter(brstproc < 9 ) %>%
-  
-  filter(lastmamm < 9 ) %>%
-  
-  filter(surgmeno < 9 ) %>%
-  
-  filter(hrt < 9 )
-
-View(bc_limited)
-
-#View(risk)
-
-mylogit <- glm(cancer ~ agegrp + density + bmi + 
-                 agefirst + nrelbc + brstproc + lastmamm + hrt, data = bc_limited, family = binomial)
+mylogit <- glm(cancer ~ hrt + race + Hispanic + surgmeno, data = bc, family = binomial)
 summary(mylogit)
 confint(mylogit)
 
-########### Creating a predictive model #################
-# Split data into train and test
-bc_limited$cancer = as.factor(bc_limited$cancer)
+rand_sampl <- bc[sample(nrow(bc), 10000), ]
 
-set.seed(429)
-split <- initial_split(bc_limited, prop = 0.8, strata = cancer)
-train <- split %>% 
-  training()
-test <- split %>% 
-  testing()
+my_function <- function(formula, data, ids) {
+  dat<-data[ids,]
+  my_glm<-glm(formula, family=binomial,data=dat)
+  return(my_glm$coef)
+}
 
-# FIGURING OUT HYPERPARAMETERS
+boot.out <- boot(data=bc, statistic=my_function, R=2500, formula=cancer ~ hrt + race + Hispanic + surgmeno)
 
-# # Define the logistic regression model with penalty and mixture hyperparameters
-# log_reg <- logistic_reg(mixture = tune(), penalty = tune(), engine = "glmnet")
-# 
-# # Define the grid search for the hyperparameters
-# grid <- grid_regular(mixture(), penalty(), levels = c(mixture = 4, penalty = 3))
-# 
-# # Define the workflow for the model
-# log_reg_wf <- workflow() %>%
-#   add_model(log_reg) %>%
-#   add_formula(cancer ~ .)
-# 
-# # Define the resampling method for the grid search
-# folds <- vfold_cv(train, v = 5)
-# 
-# # Tune the hyperparameters using the grid search
-# log_reg_tuned <- tune_grid(
-#   log_reg_wf,
-#   resamples = folds,
-#   grid = grid,
-#   control = control_grid(save_pred = TRUE)
-# )
-# 
-# select_best(log_reg_tuned, metric = "roc_auc")
-
-# BEST VALUES WERE 1 FOR MIXTURE AND 0.0000000001 FOR PENALTY
-
-model <- logistic_reg(mixture=1, penalty=0.0000000001) %>%
-  set_engine("glmnet") %>%
-  set_mode("classification") %>%
-  fit(cancer ~ ., data = train)
-
-tidy(model)
-
-# Class Predictions
-pred_class <- predict(model,
-                      new_data = test,
-                      type = "class")
-
-# Class Probabilities
-pred_proba <- predict(model,
-                      new_data = test,
-                      type = "prob")
-results <- test %>%
-  select(cancer) %>%
-  bind_cols(pred_class, pred_proba)
-
-accuracy(results, truth = cancer, estimate = .pred_class)
-
+est<-summary(boot.out)$original
+SE<-summary(boot.out)$bootSE
+lci<-est-1.96*SE
+uci<-est+1.96*SE
+ci_labels <- c("Intercept", "hrt", "race", "Hispanic", "surgmeno")
+list(ci_labels=ci_labels,est=est,lci=lci,uci=uci)
+summary(boot.out)
