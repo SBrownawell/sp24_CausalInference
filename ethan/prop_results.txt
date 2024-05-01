@@ -145,11 +145,12 @@ The following object is masked from ‘package:dplyr’:
 ##   Journal of Statistical Software, 42(7): 1-52. 
 ##
 
+[1] "Matching"
 
-Estimate...  0.00076209 
-SE.........  0.00024104 
-T-stat.....  3.1617 
-p.val......  0.0015684 
+Estimate...  0.00053193 
+SE.........  0.00024347 
+T-stat.....  2.1848 
+p.val......  0.028905 
 
 Original number of observations..............  195516 
 Original number of treated obs...............  92010 
@@ -159,18 +160,120 @@ Matched number of observations  (unweighted).  195516
 Caliper (SDs)........................................   0.25 
 Number of obs dropped by 'exact' or 'caliper'  0 
 
+[1] "sqrt(var(e))"
+[1] 0.1041433
+[1] "MatchBalance"
 
-Estimate...  0.00036953 
-SE.........  0.00035684 
-T-stat.....  1.0356 
-p.val......  0.30041 
+***** (V1) race2 *****
+                       Before Matching 	 	 After Matching
+mean treatment........   0.031943 	 	   0.036462 
+mean control..........   0.036489 	 	   0.036462 
+std mean diff.........    -2.5837 	 	          0 
 
-Original number of observations..............  195516 
-Original number of treated obs...............  92010 
-Matched number of observations...............  92010 
-Matched number of observations  (unweighted).  92010 
+mean raw eQQ diff.....  0.0053239 	 	          0 
+med  raw eQQ diff.....          0 	 	          0 
+max  raw eQQ diff.....          1 	 	          0 
 
-Caliper (SDs)........................................   0.25 
-Number of obs dropped by 'exact' or 'caliper'  0 
+mean eCDF diff........  0.0022727 	 	          0 
+med  eCDF diff........  0.0022727 	 	          0 
+max  eCDF diff........  0.0045455 	 	          0 
 
-Error in eval(ei, envir) : object 'match.out' not found
+var ratio (Tr/Co).....    0.88033 	 	          1 
+T-test p-value........    0.38747 	 	          1 
+
+
+***** (V2) race3 *****
+                       Before Matching 	 	 After Matching
+mean treatment........   0.017746 	 	   0.017799 
+mean control..........   0.017799 	 	   0.017799 
+std mean diff.........  -0.040225 	 	          0 
+
+mean raw eQQ diff..... 0.00088731 	 	          0 
+med  raw eQQ diff.....          0 	 	          0 
+max  raw eQQ diff.....          1 	 	          0 
+
+mean eCDF diff........ 2.6566e-05 	 	          0 
+med  eCDF diff........ 2.6566e-05 	 	          0 
+max  eCDF diff........ 5.3132e-05 	 	          0 
+
+var ratio (Tr/Co).....    0.99795 	 	          1 
+T-test p-value........    0.98926 	 	          1 
+
+
+***** (V3) race4 *****
+                       Before Matching 	 	 After Matching
+mean treatment........  0.0035492 	 	   0.005217 
+mean control..........  0.0052266 	 	   0.005217 
+std mean diff.........    -2.8193 	 	          0 
+
+mean raw eQQ diff.....  0.0017746 	 	          0 
+med  raw eQQ diff.....          0 	 	          0 
+max  raw eQQ diff.....          1 	 	          0 
+
+mean eCDF diff........ 0.00083869 	 	          0 
+med  eCDF diff........ 0.00083869 	 	          0 
+max  eCDF diff........  0.0016774 	 	          0 
+
+var ratio (Tr/Co).....    0.68081 	 	          1 
+T-test p-value........    0.34615 	 	          1 
+
+
+***** (V4) race5 *****
+                       Before Matching 	 	 After Matching
+mean treatment........   0.014197 	 	    0.01116 
+mean control..........   0.011143 	 	    0.01116 
+std mean diff.........     2.5807 	 	          0 
+
+mean raw eQQ diff.....  0.0026619 	 	          0 
+med  raw eQQ diff.....          0 	 	          0 
+max  raw eQQ diff.....          1 	 	          0 
+
+mean eCDF diff........  0.0015272 	 	          0 
+med  eCDF diff........  0.0015272 	 	          0 
+max  eCDF diff........  0.0030544 	 	          0 
+
+var ratio (Tr/Co).....     1.2713 	 	          1 
+T-test p-value........    0.38756 	 	          1 
+
+
+***** (V5) Hispanic *****
+                       Before Matching 	 	 After Matching
+mean treatment........  0.0097604 	 	   0.026632 
+mean control..........   0.026041 	 	    0.02609 
+std mean diff.........    -16.552 	 	    0.33673 
+
+mean raw eQQ diff.....   0.016859 	 	 0.00054216 
+med  raw eQQ diff.....          0 	 	          0 
+max  raw eQQ diff.....          1 	 	          1 
+
+mean eCDF diff........  0.0081401 	 	 0.00027108 
+med  eCDF diff........  0.0081401 	 	 0.00027108 
+max  eCDF diff........    0.01628 	 	 0.00054216 
+
+var ratio (Tr/Co).....    0.38142 	 	     1.0202 
+T-test p-value........ 4.2965e-08 	 	    0.28755 
+
+
+***** (V6) surgmeno *****
+                       Before Matching 	 	 After Matching
+mean treatment........     0.2724 	 	    0.27588 
+mean control..........     0.2759 	 	    0.27588 
+std mean diff.........   -0.78372 	 	          0 
+
+mean raw eQQ diff.....  0.0035492 	 	          0 
+med  raw eQQ diff.....          0 	 	          0 
+max  raw eQQ diff.....          1 	 	          0 
+
+mean eCDF diff........  0.0017453 	 	          0 
+med  eCDF diff........  0.0017453 	 	          0 
+max  eCDF diff........  0.0034906 	 	          0 
+
+var ratio (Tr/Co).....    0.99298 	 	          1 
+T-test p-value........    0.79311 	 	          1 
+
+
+Before Matching Minimum p.value: 4.2965e-08 
+Variable Name(s): Hispanic  Number(s): 5 
+
+After Matching Minimum p.value: 0.28755 
+Variable Name(s): Hispanic  Number(s): 5 

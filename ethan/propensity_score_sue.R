@@ -138,14 +138,19 @@ RD <- mean(c(EY1 - EY0))
 print("RD")
 print(RD)
 
-if(TRUE) {
-	#Matching on the Propensity Score
-	if (!require("Matching")) install.packages("Matching")
-	library(Matching)
+#Matching on the Propensity Score
+if (!require("Matching")) install.packages("Matching")
+library(Matching)
 
-	print(summary(Match(Y=dat$cancer,Tr=dat$hrt,X=e,estimand="ATE",caliper=.25,replace=T,ties=F)))
-	sqrt(var(e))
+print("Matching")
+match_obj = Match(Y=dat$cancer,Tr=dat$hrt,X=e,estimand="ATE",caliper=.25,replace=T,ties=F)
+print(summary(match_obj))
+print("sqrt(var(e))")
+print(sqrt(var(e)))
 
-	print(summary(Match(Y=dat$cancer,Tr=dat$hrt,X=e,estimand="ATT",caliper=.25,replace=T,ties=F)))
-	MatchBalance(cancer~race + Hispanic + surgmeno, data=dat, match.out=match.out)
-}
+#print(summary(Match(Y=dat$cancer,Tr=dat$hrt,X=e,estimand="ATT",caliper=.25,replace=T,ties=F)))
+print("MatchBalance")
+MatchBalance(cancer~race + Hispanic + surgmeno, data=dat, match.out=match_obj)
+
+
+
