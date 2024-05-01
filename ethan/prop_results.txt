@@ -1,0 +1,176 @@
+> source("propensity_score_sue.R")
+Loading required package: MatchIt
+Loading required package: dplyr
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+[1] "Outcome-model Standardization"
+[1] "EY0"
+[1] 0.005472481
+[1] "EY1"
+[1] 0.006094363
+[1] "RD"
+[1] 0.0006218819
+[1] "Exposure-model Standarization"
+[1] "EY0"
+(Intercept) 
+0.005521173 
+[1] "EY1"
+(Intercept) 
+0.006116897 
+[1] "RD"
+ (Intercept) 
+0.0005957239 
+[1] "Propensity score in Outcome Model"
+[1] "EY0"
+[1] 0.005472965
+[1] "EY1"
+[1] 0.006093752
+[1] "RD"
+[1] 0.0006207871
+[1] "Propensity Score in Outcome Model (Conditional Treatment Effect Estimates"
+
+Call:
+glm(formula = cancer ~ hrt + e, family = binomial, data = dat)
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)    
+(Intercept) -5.14039    0.13836  -37.15   <2e-16 ***
+hrt          0.10807    0.06107    1.77   0.0768 .  
+e           -0.13207    0.29355   -0.45   0.6528    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 13869  on 195515  degrees of freedom
+Residual deviance: 13866  on 195513  degrees of freedom
+AIC: 13872
+
+Number of Fisher Scoring iterations: 8
+
+[1] "Stratification on the Propensity Score"
+
+Call:
+glm(formula = hrt ~ race + Hispanic + surgmeno, family = binomial, 
+    data = dat)
+
+Coefficients:
+             Estimate Std. Error z value Pr(>|z|)    
+(Intercept) -0.343767   0.005566 -61.763  < 2e-16 ***
+race2       -0.415190   0.025507 -16.277  < 2e-16 ***
+race3       -0.672838   0.036464 -18.452  < 2e-16 ***
+race4       -0.300765   0.065087  -4.621 3.82e-06 ***
+race5       -0.085735   0.044424  -1.930   0.0536 .  
+Hispanic     0.001063   0.029456   0.036   0.9712    
+surgmeno     0.927205   0.010515  88.177  < 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 270366  on 195515  degrees of freedom
+Residual deviance: 261775  on 195509  degrees of freedom
+AIC: 261789
+
+Number of Fisher Scoring iterations: 4
+
+[1] 0.2656893
+[1] 0.4148947
+[1] 0.6418581
+[1] 0.6421025
+[1] "summary(out)"
+
+Call:
+glm(formula = cancer ~ hrt * equads - 1 - hrt, data = dat)
+
+Coefficients:
+                            Estimate Std. Error t value Pr(>|t|)    
+equads[0.2657,0.4149]      5.469e-03  2.639e-04  20.723   <2e-16 ***
+equads(0.4149,0.6419]      5.749e-03  5.284e-04  10.880   <2e-16 ***
+equads(0.6419,0.6421]     -7.476e-18  2.851e-03   0.000   1.0000    
+hrt:equads[0.2657,0.4149]  9.419e-04  4.130e-04   2.281   0.0226 *  
+hrt:equads(0.4149,0.6419] -1.803e-04  6.687e-04  -0.270   0.7875    
+hrt:equads(0.6419,0.6421]  4.472e-03  3.641e-03   1.228   0.2193    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for gaussian family taken to be 0.005730889)
+
+    Null deviance: 1127.0  on 195516  degrees of freedom
+Residual deviance: 1120.4  on 195510  degrees of freedom
+AIC: -454373
+
+Number of Fisher Scoring iterations: 2
+
+[1] "out$coef"
+    equads[0.2657,0.4149]     equads(0.4149,0.6419]     equads(0.6419,0.6421] hrt:equads[0.2657,0.4149] 
+             5.469329e-03              5.749367e-03             -7.475750e-18              9.419433e-04 
+hrt:equads(0.4149,0.6419] hrt:equads(0.6419,0.6421] 
+            -1.802955e-04              4.472272e-03 
+[1] "EY0"
+equads[0.2657,0.4149] equads(0.4149,0.6419] equads(0.6419,0.6421] 
+         5.469329e-03          5.749367e-03         -7.475750e-18 
+[1] "EY1"
+equads[0.2657,0.4149] equads(0.4149,0.6419] equads(0.6419,0.6421] 
+          0.006411273           0.005569071           0.004472272 
+[1] "EY1-EY0"
+equads[0.2657,0.4149] equads(0.4149,0.6419] equads(0.6419,0.6421] 
+         0.0009419433         -0.0001802955          0.0044722719 
+[1] "RD"
+[1] 0.00174464
+Loading required package: Matching
+Loading required package: MASS
+
+Attaching package: ‘MASS’
+
+The following object is masked from ‘package:dplyr’:
+
+    select
+
+## 
+##  Matching (Version 4.10-14, Build Date: 2023-09-13)
+##  See https://www.jsekhon.com for additional documentation.
+##  Please cite software as:
+##   Jasjeet S. Sekhon. 2011. ``Multivariate and Propensity Score Matching
+##   Software with Automated Balance Optimization: The Matching package for R.''
+##   Journal of Statistical Software, 42(7): 1-52. 
+##
+
+
+Estimate...  0.00076209 
+SE.........  0.00024104 
+T-stat.....  3.1617 
+p.val......  0.0015684 
+
+Original number of observations..............  195516 
+Original number of treated obs...............  92010 
+Matched number of observations...............  195516 
+Matched number of observations  (unweighted).  195516 
+
+Caliper (SDs)........................................   0.25 
+Number of obs dropped by 'exact' or 'caliper'  0 
+
+
+Estimate...  0.00036953 
+SE.........  0.00035684 
+T-stat.....  1.0356 
+p.val......  0.30041 
+
+Original number of observations..............  195516 
+Original number of treated obs...............  92010 
+Matched number of observations...............  92010 
+Matched number of observations  (unweighted).  92010 
+
+Caliper (SDs)........................................   0.25 
+Number of obs dropped by 'exact' or 'caliper'  0 
+
+Error in eval(ei, envir) : object 'match.out' not found
